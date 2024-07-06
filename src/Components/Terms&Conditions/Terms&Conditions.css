@@ -1,0 +1,20 @@
+@media screen and (max-width:900px) {
+    .about{
+        flex-direction: column-reverse;
+    }
+    .about .abouttext p{
+        width: 100%;
+        padding: 15px;
+    }
+    .about .abouttext h1{
+        text-align: center;
+    }
+    .about .aboutimg{
+        width: 100%;
+    }
+}
+@media screen and (max-width:640px) {
+    .about .abouttext p{
+        padding: 15px;
+    }
+}
