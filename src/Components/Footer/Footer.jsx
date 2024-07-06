@@ -27,7 +27,7 @@ const Footer = () => {
                     {/* About Grocery */}
                     <div className='col sm:col-span-2  lg:col-span-2 xl:space-y-6 space-y-4'>
                         {/* Brand_Logo */}
-                        <img className='sm:max-h-24 max-h-11 my-auto cursor-pointer' src={logo_black} alt="grocery" />
+                        <img className='sm:max-h-24 max-h-11 my-auto cursor-pointer' src="https://desismart.co.uk/wp-content/uploads/2023/05/Desismart_Logo.png" alt="grocery" />
 
                         {/* Description */}
                         <p className='sm:text-sm w-11/12 sm:w-10/12 text-xs tracking-wide'>
