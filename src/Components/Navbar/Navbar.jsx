@@ -622,7 +622,7 @@ const Navbar = (props) => {
                           /> */}
 
 <div className="container3">
-    <input type="text" name="text" required="" placeholder="Search the product.." className="input text-black items-center bg-transparent border-2  border-black m-0"
+    <input type="text" name="text" required="" placeholder="Search the product.." className="input2 text-black items-center bg-transparent border-2  border-black m-0"
     label="Search products"
     size="small"
     value={searchTerm}

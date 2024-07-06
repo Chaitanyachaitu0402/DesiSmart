@@ -13,7 +13,7 @@
     color: white;
   }
   
-  .input {
+  .input2 {
     padding-left: var(--size-button);
     height: var(--size-button);
     font-size: 15px;
@@ -28,15 +28,15 @@
     cursor: pointer;
   }
   
-  .input:focus,
-  .input:not(:invalid) {
+  .input2:focus,
+  .input2:not(:invalid) {
     width: 200px;
     cursor: text;
     box-shadow: 0px 0px 0px #0e0e0e, 0px 0px 0px rgb(95 94 94 / 25%), inset 1.5px 1.5px 3px #0e0e0e, inset -1.5px -1.5px 3px #5f5e5e;
   }
   
-  .input:focus + .icon,
-  .input:not(:invalid) + .icon {
+  .input2:focus + .icon,
+  .input2:not(:invalid) + .icon {
     pointer-events: all;
     cursor: pointer;
   }
