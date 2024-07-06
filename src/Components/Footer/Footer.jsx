@@ -1,6 +1,5 @@
 import { Container, useMediaQuery } from '@mui/material';
 import React from 'react';
-import logo_black from "../../assets/logo_black.png";
 import Facebook from '../../assets/icons/social_icons/Facebook.png';
 import Instagram from '../../assets/icons/social_icons/Instagram.png';
 import Twitter from '../../assets/icons/social_icons/Twitter.png';
