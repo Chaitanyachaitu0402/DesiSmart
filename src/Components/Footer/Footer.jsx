@@ -1,5 +1,6 @@
 import { Container, useMediaQuery } from '@mui/material';
 import React from 'react';
+import logo_black from "../../assets/Logos/Logo_black.png";
 import Facebook from '../../assets/icons/social_icons/Facebook.png';
 import Instagram from '../../assets/icons/social_icons/Instagram.png';
 import Twitter from '../../assets/icons/social_icons/Twitter.png';
@@ -26,7 +27,7 @@ const Footer = () => {
                     {/* About Grocery */}
                     <div className='col sm:col-span-2  lg:col-span-2 xl:space-y-6 space-y-4'>
                         {/* Brand_Logo */}
-                        <img className='sm:max-h-24 max-h-11 my-auto cursor-pointer' src="https://desismart.co.uk/wp-content/uploads/2023/05/Desismart_Logo.png" alt="grocery" />
+                        <img className='sm:max-h-24 max-h-11 my-auto cursor-pointer' src={logo_black} alt="grocery" />
 
                         {/* Description */}
                         <p className='sm:text-sm w-11/12 sm:w-10/12 text-xs tracking-wide'>
