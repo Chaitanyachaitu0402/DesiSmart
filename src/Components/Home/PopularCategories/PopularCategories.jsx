@@ -123,7 +123,8 @@ const Categories = ({category}) => {
         >
             {
                 !isLoading ? (
-                    categories.map(category => (
+                    
+                   categories && categories.map(category => (
                         <SwiperSlide key={category.Id}>
                             <Card onClick={handleCardClick} style={{ cursor: 'pointer',borderRadius:'12px' }} className='hover:bg-[#979595] hover:transition-all'>
       
