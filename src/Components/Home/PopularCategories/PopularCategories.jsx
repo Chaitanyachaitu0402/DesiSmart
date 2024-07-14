@@ -1,119 +1,150 @@
 import { Button, Container, useMediaQuery } from '@mui/material';
-import { useEffect, useState } from 'react';
-import ProductCard, { ProductCardSkeleton } from '../../Products/ProductCard/ProductCard';
+import { ArrowForward } from "@mui/icons-material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Navigation, Pagination } from "swiper";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
+import list from "../../../assets/list.gif"
+import "swiper/css";
+import 'swiper/css/navigation';
+import CategoryCard from '../../CategoryCard/CategoryCard';
+import { useRef, useEffect, useState } from 'react';
+import './swiper.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const EnjoyOurFreshGroceryItems = () => {
-    const [items, setItems] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+// Category images
+
+const PopularCategories = () => {
+    // Media Query
+    const isExtraSmallScreen = useMediaQuery('(max-width: 664px)');
     const navigate = useNavigate();
-
-    // MediaQuery
-    const isExtraSmallScreen = useMediaQuery('(max-width: 640px)');
-
-    const categoryIds = {
-        Biscuits: 1,
-        Breakfast: 2,
-        "DryFruits and Nuts": 3
-    };
-
-    // Fetch products based on selected category
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setIsLoading(true);
-            try {
-                const accessToken = localStorage.getItem('accessToken');
-                console.log("=========>", accessToken);
-                const categoryName = Object.keys(categoryIds)[selectedCategory];
-                const categoryId = categoryIds[categoryName];
-
-                const response = await axios.get(
-                    `https://desismart.co.uk/web/product/get-all-product`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`,
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                console.log("API Response: ", response);
-
-                if (response.data && response.data.data) {
-                    setItems(response.data.data.slice(0, 3));
-                } else {
-                    console.error("Invalid API response structure: ", response.data);
-                }
-                setIsLoading(false);
-            } catch (error) {
-                console.error("Error fetching products:", error);
-                setIsLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, [selectedCategory]);
 
     return (
         <Container>
-            <div className='space-y-7 xl:space-y-8'>
-                <h1 className='text-center pb-0 md:text-2xl text-xl font-semibold capitalize tracking-wide'>
-                    Enjoy Our Healthy And Fresh <br />
-                    Grocery Items
-                </h1>
-                <ItemsToggler
-                    alignment={selectedCategory}
-                    setAlignment={setSelectedCategory} />
-                <div className='grid md:grid-cols-3 sm:grid-cols-2 lg:gap-6 gap-x-5 gap-y-5'>
-                    {!isLoading ?
-                        items.map(item => (
-                            <ProductCard key={item.Id} product={item} />
-                        ))
-                        : Array.from({ length: 3 }).map((_, i) => {
-                            return <ProductCardSkeleton key={i} />
-                        })
-                    }
-                </div>
-                <Button
-                    onClick={() => navigate('/products')}
-                    color='success'
-                    size={isExtraSmallScreen ? 'small' : 'medium'}
-                    variant='outlined'
-                    sx={{ textTransform: 'capitalize', display: 'block', mx: 'auto' }}>
-                    View All Products
-                </Button>
-            </div>
+            <section className='space-y-7'>
+                <header className='flex justify-between items-center'>
+                    {/* Title */}
+                    <h1 className='pb-0 md:text-2xl text-xl font-semibold capitalize'>
+                        Top Categories
+                    </h1>
+                    {/* See all Categories Btn */}
+                    <Button
+                        size={isExtraSmallScreen ? 'small' : 'medium'}
+                        color='success'
+                        variant='outlined'
+                        onClick={() => navigate('/categories')}
+                        sx={{ textTransform: 'capitalize' }} endIcon={
+                            <ArrowForward fontSize='large' />}>
+                        See All
+                    </Button>
+                </header>
+
+                {/* Categories */}
+                <Categories />
+            </section>
         </Container>
     );
 };
 
-const ItemsToggler = ({ alignment, setAlignment }) => {
-    const isExtraSmallScreen = useMediaQuery('(max-width: 640px)');
-    const isLargeScreen = useMediaQuery('(min-width: 1024px)');
+// Categories Carousel
+const Categories = ({category}) => {
+    const navigate = useNavigate();
 
-    const categories = [
-        { id: 0, name: 'Biscuits' },
-        { id: 1, name: 'Breakfast' },
-        { id: 2, name: 'DryFruits and Nuts' },
-    ];
+  const handleCardClick = () => {
+    navigate(`/categories`);
+  };
+    const swiperRef = useRef(null);
+    const [categories, setCategories] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
+    // const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
+    // const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken')
+                const response = await axios.get(
+                    `https://desismart.co.uk/web/categories/get-all-categories`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                            // "epos-api-key": eposKey,
+                            // "epos-api-secret": eposSecret,
+                        },
+                    }
+                );
+                // console.log(response.data.data)
+                setCategories(response.data.data);
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    // Media Query
+    const isExtraSmallScreen = useMediaQuery('(max-width: 640px)');
+
+    
 
     return (
-        <div className='space-x-3 md:space-x-5 text-center'>
-            {categories.map(category => (
-                <Button
-                    sx={{ textTransform: 'capitalize', transition: 'all 150ms ease-in-out' }}
-                    size={isExtraSmallScreen ? 'small' : isLargeScreen ? 'large' : 'medium'}
-                    color='success'
-                    variant={alignment === category.id ? 'contained' : 'text'}
-                    key={category.id}
-                    onClick={() => setAlignment(category.id)}
-                    value={category.id}>
-                    {category.name}
-                </Button>
-            ))}
-        </div>
-    );
+        <Swiper
+            breakpoints={{
+                // Extra_Small Screen
+                0: {
+                    slidesPerView: 2,
+                    spaceBetween: 20
+                },
+                // Medium Screen
+                768: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                },
+                // Large Screen
+                1060: {
+                    slidesPerView: 4,
+                    spaceBetween: 25
+                }
+            }}
+            modules={[Pagination, Navigation, FreeMode]}
+            navigation={!isExtraSmallScreen}
+            freeMode={true}
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            className="mySwiper"
+        >
+            {
+                !isLoading ? (
+                    categories.map(category => (
+                        <SwiperSlide key={category.Id}>
+                            <Card onClick={handleCardClick} style={{ cursor: 'pointer',borderRadius:'12px' }} className='hover:bg-[#979595] hover:transition-all'>
+      
+      <CardContent className='bg-[#ffffff] hover:bg-[#8f4144]'>
+      <img src={list} className='w-20 m-auto' alt="" />
+        <Typography gutterBottom component="div">
+          <div className='p-7 items-center text-black hover:text-white text-center text-xl' style={{fontWeight:'600'}}>{category.Name}</div>
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {category.Description}
+        </Typography>
+      </CardContent>
+    </Card>
+                        </SwiperSlide>
+                    ))
+                ) : (
+                    <p>Loading categories...</p>
+                )
+            }
+        </Swiper>
+    )
 };
 
-export default EnjoyOurFreshGroceryItems;
+export default PopularCategories;

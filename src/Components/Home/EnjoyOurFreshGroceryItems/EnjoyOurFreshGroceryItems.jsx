@@ -13,15 +13,10 @@ const EnjoyOurFreshGroceryItems = () => {
     // MediaQuery
     const isExtraSmallScreen = useMediaQuery('(max-width: 640px)');
 
-    // Eposnow API keys and authentication
-    // const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
-    // const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
-    // const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
-
     const categoryIds = {
-        Biscuits: 1, // Replace with actual category ID
-        Breakfast: 2, // Replace with actual category ID
-        "DryFruits and Nuts": 3 // Replace with actual category ID
+        Biscuits: 1,
+        Breakfast: 2,
+        "DryFruits and Nuts": 3
     };
 
     // Fetch products based on selected category
@@ -30,7 +25,7 @@ const EnjoyOurFreshGroceryItems = () => {
             setIsLoading(true);
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                console.log("=========>",accessToken);
+                console.log("=========>", accessToken);
                 const categoryName = Object.keys(categoryIds)[selectedCategory];
                 const categoryId = categoryIds[categoryName];
 
@@ -40,12 +35,16 @@ const EnjoyOurFreshGroceryItems = () => {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
                             "Content-Type": "application/json",
-                            // "epos-api-key": eposKey,
-                            // "epos-api-secret": eposSecret,
                         },
                     }
                 );
-                setItems(response.data.data.slice(0, 3));
+                console.log("API Response: ", response);
+
+                if (response.data && response.data.data) {
+                    setItems(response.data.data.slice(0, 3));
+                } else {
+                    console.error("Invalid API response structure: ", response.data);
+                }
                 setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching products:", error);
@@ -57,19 +56,15 @@ const EnjoyOurFreshGroceryItems = () => {
     }, [selectedCategory]);
 
     return (
-        <Container >
+        <Container>
             <div className='space-y-7 xl:space-y-8'>
-                {/* Title */}
                 <h1 className='text-center pb-0 md:text-2xl text-xl font-semibold capitalize tracking-wide'>
                     Enjoy Our Healthy And Fresh <br />
                     Grocery Items
                 </h1>
-                {/* Items Toggler */}
                 <ItemsToggler
                     alignment={selectedCategory}
                     setAlignment={setSelectedCategory} />
-
-                {/* Grocery Items */}
                 <div className='grid md:grid-cols-3 sm:grid-cols-2 lg:gap-6 gap-x-5 gap-y-5'>
                     {!isLoading ?
                         items.map(item => (
@@ -93,16 +88,14 @@ const EnjoyOurFreshGroceryItems = () => {
     );
 };
 
-// Grocery Items Toggler
 const ItemsToggler = ({ alignment, setAlignment }) => {
-    // MediaQuery
     const isExtraSmallScreen = useMediaQuery('(max-width: 640px)');
     const isLargeScreen = useMediaQuery('(min-width: 1024px)');
 
     const categories = [
-        // { id: 0, name: 'Biscuits' },
-        // { id: 1, name: 'Breakfast' },
-        // { id: 2, name: 'DryFruits and Nuts' },
+        { id: 0, name: 'Biscuits' },
+        { id: 1, name: 'Breakfast' },
+        { id: 2, name: 'DryFruits and Nuts' },
     ];
 
     return (
