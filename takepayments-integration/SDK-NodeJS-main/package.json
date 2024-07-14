@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "axios": "^0.21.4",
+    "chai": "^4.4.1",
+    "html-entities": "^1.4.0",
+    "http-build-query": "^0.7.0",
+    "mocha": "^8.4.0"
+  }
+}

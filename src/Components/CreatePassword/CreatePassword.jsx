@@ -13,7 +13,7 @@ const CreateNewPassword = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:3000/user/forgot-password', {
+            const response = await axios.post('https://desismart.co.uk/web/user/forgot-password', {
                 email: email,
                 newpassword: data.password,
                 confirmpassword: data.confirmPassword

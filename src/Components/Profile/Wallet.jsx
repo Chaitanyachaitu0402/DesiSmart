@@ -1,31 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const WalletPage = () => {
     const location = useLocation();
+    const [transactions, setTransactions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     const isActive = (path) => location.pathname === path;
 
-    const [transactions] = useState([
-        {
-            id: '1',
-            date: '2023-06-01',
-            description: 'Deposit',
-            amount: '+$100.00'
-        },
-        {
-            id: '2',
-            date: '2023-06-02',
-            description: 'Purchase',
-            amount: '-$50.00'
-        },
-        {
-            id: '3',
-            date: '2023-06-03',
-            description: 'Withdrawal',
-            amount: '-$20.00'
-        }
-    ]);
+    useEffect(() => {
+        const fetchWalletTransactions = async () => {
+            try {
+                const user_id = localStorage.getItem('user_id');
+                const accessToken = localStorage.getItem('accessToken');
+                
+                if (!user_id || !accessToken) {
+                    console.error('User ID or Access Token not found in localStorage.');
+                    setError('User ID or Access Token not found.');
+                    setLoading(false);
+                    return;
+                }
+
+                const response = await axios.post(
+                    'https://desismart.co.uk/web/wallet/get-wallet-by-user-id',
+                    { user_id },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+
+                // Log the full response to inspect its structure
+                console.log('Full API Response:', response.data.data);
+
+                // Extract and set the data correctly
+                if (response.data.data && response.data.data && response.data.data) {
+                    // Ensure the data is properly formatted
+                    const fetchedData = response.data.data;
+                    // Wrap single object in an array if it's not already an array
+                    setTransactions(Array.isArray(fetchedData) ? fetchedData : [fetchedData]);
+                } else {
+                    console.error('Unexpected response format:', response.data);
+                    setError('Unexpected response format.');
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching wallet transactions:', error);
+                setError('Error fetching wallet transactions. Please try again later.');
+                setLoading(false);
+            }
+        };
+
+        fetchWalletTransactions();
+    }, []);
 
     return (
         <div className="pt-20 pl-10 pr-10 flex gap-10">
@@ -64,35 +95,11 @@ const WalletPage = () => {
                                     Profile Information
                                 </Link>
                             </li>
-                            {/* <li className="mb-2">
-                                <Link
-                                    to="/address"
-                                    className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/account/manage-address') ? 'text-blue-600 font-bold' : ''}`}
-                                >
-                                    Manage Address
-                                </Link>
-                            </li> */}
                         </ul>
                     </li>
                     <li className="mb-4 text-white font-bold">
-                        Payment
+                        {/* Payment */}
                         <ul className="ml-4 mt-4">
-                            <li className="mb-2">
-                                <Link
-                                    to="/giftcards"
-                                    className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/payment/gift-cards') ? 'text-blue-600 font-bold' : ''}`}
-                                >
-                                    Gift Cards
-                                </Link>
-                            </li>
-                            <li className="mb-2">
-                                <Link
-                                    to="/savedcards"
-                                    className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/payment/saved-cards') ? 'text-blue-600 font-bold' : ''}`}
-                                >
-                                    Saved Cards
-                                </Link>
-                            </li>
                         </ul>
                     </li>
                     <li>
@@ -110,31 +117,37 @@ const WalletPage = () => {
                 <div>
                     <h1 className="text-3xl font-bold mb-6">Wallet</h1>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 className="text-xl font-semibold mb-4">Your Wallet Transactions</h2>
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white">
-                            <thead>
-                                <tr>
-                                    <th className="py-2 px-4 border-b border-gray-200 text-left">Transaction ID</th>
-                                    <th className="py-2 px-4 border-b border-gray-200 text-left">Date</th>
-                                    <th className="py-2 px-4 border-b border-gray-200 text-left">Description</th>
-                                    <th className="py-2 px-4 border-b border-gray-200 text-left">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transactions.map((transaction) => (
-                                    <tr key={transaction.id} className="hover:bg-gray-100">
-                                        <td className="py-2 px-4 border-b border-gray-200">{transaction.id}</td>
-                                        <td className="py-2 px-4 border-b border-gray-200">{transaction.date}</td>
-                                        <td className="py-2 px-4 border-b border-gray-200">{transaction.description}</td>
-                                        <td className={`py-2 px-4 border-b border-gray-200 ${transaction.amount.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>{transaction.amount}</td>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : error ? (
+                    <div className="text-red-600">{error}</div>
+                ) : (
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 className="text-xl font-semibold mb-4">Your Wallet Transactions</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white">
+                                <thead>
+                                    <tr>
+                                        <th className="py-2 px-4 border-b border-gray-200 text-left">Action</th>
+                                        <th className="py-2 px-4 border-b border-gray-200 text-left">Date</th>
+                                        {/* <th className="py-2 px-4 border-b border-gray-200 text-left">Time</th> */}
+                                        <th className="py-2 px-4 border-b border-gray-200 text-left">Amount</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {transactions.map((transaction) => (
+                                        <tr key={transaction.wallet_id} className="hover:bg-gray-100">
+                                            <td className="py-2 px-4 border-b border-gray-200">{transaction.wallet_name}</td>
+                                            <td className="py-2 px-4 border-b border-gray-200">{transaction.date}</td>
+                                            {/* <td className="py-2 px-4 border-b border-gray-200">{transaction.time}</td> */}
+                                            <td className={`py-2 px-4 border-b border-gray-200 text-green-600`}> + {transaction.amount}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

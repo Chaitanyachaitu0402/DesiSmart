@@ -16,6 +16,7 @@ const ProfilePage = () => {
         email: '',
         phoneNumber: '',
         Address: '',
+        Pincode:'',
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +24,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         const loggedInUser = JSON.parse(localStorage.getItem('userData'));
+        console.log(loggedInUser);
         if (loggedInUser) {
             setUserInfo({
                 user_id: loggedInUser.user_id || '',
@@ -30,6 +32,7 @@ const ProfilePage = () => {
                 email: loggedInUser.email || '',
                 phoneNumber: loggedInUser.mobile_number || '',
                 Address: loggedInUser.Address || '',
+                Pincode: loggedInUser.Pincode || '',
             });
         }
     }, []);
@@ -49,7 +52,7 @@ const ProfilePage = () => {
             }
 
             const response = await axios.post(
-                'http://localhost:3000/user/update-user',
+                'https://desismart.co.uk/web/user/update-user',
                 userInfo,
                 {
                     headers: {
@@ -135,24 +138,24 @@ const ProfilePage = () => {
                         </ul>
                     </li>
                     <li className="mb-4 text-white font-bold">
-                        Payment
+                        {/* Payment */}
                         <ul className="ml-4 mt-4">
-                            <li className="mb-2">
+                            {/* <li className="mb-2">
                                 <Link
                                     to="/giftcards"
                                     className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/payment/gift-cards') ? 'text-blue-600 font-bold' : ''}`}
                                 >
                                     Gift Cards
                                 </Link>
-                            </li>
-                            <li className="mb-2">
+                            </li> */}
+                            {/* <li className="mb-2">
                                 <Link
                                     to="/savedcards"
                                     className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/payment/saved-cards') ? 'text-blue-600 font-bold' : ''}`}
                                 >
                                     Saved Cards
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </li>
                     <li>
@@ -171,20 +174,24 @@ const ProfilePage = () => {
                 <h1 className="text-3xl font-bold mb-6">Profile Information</h1>
                 <div className="bg-white p-6 rounded-lg shadow-lg ">
                     <div className="mb-4 flex gap-2">
-                        <label className="block text-black underline text-2xl font-bold mb-2">Username:</label>
-                        <p className="text-black font-bold text-2xl">{userInfo.user_name}</p>
+                        <label className="block text-black underline text-xl font-bold mb-2">Username:</label>
+                        <p className="text-black font-medium text-xl">{userInfo.user_name}</p>
                     </div>
                     <div className="mb-4 flex gap-2">
-                        <label className="block text-black underline text-2xl font-bold mb-2">Email:</label>
-                        <p className="text-black font-bold text-2xl">{userInfo.email}</p>
+                        <label className="block text-black underline text-xl font-bold mb-2">Email:</label>
+                        <p className="text-black font-medium text-xl">{userInfo.email}</p>
                     </div>
                     <div className="mb-4 flex gap-2">
-                        <label className="block text-black underline text-2xl font-bold mb-2">Phone Number:</label>
-                        <p className="text-black font-bold text-2xl">{userInfo.phoneNumber}</p>
+                        <label className="block text-black underline text-xl font-bold mb-2">Phone Number:</label>
+                        <p className="text-black font-medium text-xl">{userInfo.phoneNumber}</p>
                     </div>
                     <div className="mb-4 flex gap-2">
-                        <label className="block text-black underline text-2xl font-bold mb-2">Address:</label>
-                        <p className="text-black font-bold text-2xl">{userInfo.Address}</p>
+                        <label className="block text-black underline text-xl font-bold mb-2">Address:</label>
+                        <p className="text-black font-medium text-xl">{userInfo.Address}</p>
+                    </div>
+                    <div className="mb-4 flex gap-2">
+                        <label className="block text-black underline text-xl font-bold mb-2">Pincode:</label>
+                        <p className="text-black font-medium text-xl">{userInfo.Pincode}</p>
                     </div>
                     <div className="flex justify-end">
                         <button
@@ -237,6 +244,16 @@ const ProfilePage = () => {
                                 type="text"
                                 name="Address"
                                 value={userInfo.Address}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2">Pincode:</label>
+                            <input
+                                type="text"
+                                name="Pincode"
+                                value={userInfo.Pincode}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />

@@ -23,7 +23,19 @@ const CartItemCard = ({ item }) => {
         handleSessionStorage('set', 'cartItems', trimmedCart);
 
         try {
-            await axios.post('/api/cart/remove', { id });
+            const accessToken = localStorage.getItem("accessToken");
+            const user_id = localStorage.getItem("user_id"); // Adjust this if the user ID is stored elsewhere
+
+            await axios.post(
+                "https://desismart.co.uk/web/cart/delete-cart-by-user-id",
+                { id, user_id },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
         } catch (error) {
             console.error("Failed to remove item from cart:", error);
         }
@@ -41,13 +53,15 @@ const CartItemCard = ({ item }) => {
 
             <Fade in={true}>
                 <div className='grid max-w-[40rem] py-2.5 px-3 xl:grid-cols-5 sm:grid-cols-6 grid-cols-7 lg:gap-x-2.5 gap-x-2 rounded-md w-full bg-white hover:shadow-sm'>
-                    {/*Img */}
-                    {/* <div className='col flex items-center justify-center'>
+                    {/* Img */}
+                    <div className='col flex items-center justify-center'>
                         <img
-                            src={img}
+                            src={img || "https://desismart.co.uk/storege/userdp/" + img}
                             className='lg:h-16 h-10'
-                            alt={name} />
-                    </div> */}
+                            alt={name} 
+                            onError={(e) => { e.target.src = "https://desismart.co.uk/storege/userdp/" + img; }}
+                        />
+                    </div>
 
                     <div className='col-span-2 overflow-hidden pt-2'>
                         <div className=' overflow-hidden lg:space-y-2 space-y-0.5'>
@@ -55,19 +69,14 @@ const CartItemCard = ({ item }) => {
                             <h4 className='font-semibold lg:max-h-none max-h-10 overflow-hidden lg:text-gray-700 sm:text-sm text-xs'>
                                 {name}
                             </h4>
-
-                            {/* Description */}
-                            <h6 className='text-justify text-xs text-gray-700'>
-                                Best Quality
-                            </h6>
                         </div>
                     </div>
 
                     <div className='flex sm:col-span-1 col-span-2 justify-center items-center'>
                         <div className='lg:space-y-1 md:space-y-0 sm:space-y-0.5'>
-                            {/*Total Price */}
+                            {/* Total Price */}
                             <h3 className='font-semibold whitespace-nowrap sm:text-base text-sm text-green-600'>
-                                £ {total} GBP
+                                £ {total} 
                             </h3>
 
                             {/* Remove-Item btn */}
@@ -130,11 +139,24 @@ const QuantityController = ({ item }) => {
 
         const updateCartInDatabase = async () => {
             try {
-                await axios.post('/api/cart/update', {
-                    id,
-                    quantity: productQuantity,
-                    total: (productQuantity * price).toFixed(2)
-                });
+                const accessToken = localStorage.getItem("accessToken");
+                const user_id = localStorage.getItem("user_id"); // Adjust this if the user ID is stored elsewhere
+
+                await axios.post(
+                    "https://desismart.co.uk/cart/update-cart",
+                    {
+                        id,
+                        user_id,
+                        quantity: productQuantity,
+                        total: (productQuantity * price).toFixed(2)
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
             } catch (error) {
                 console.error("Failed to update cart item:", error);
             }

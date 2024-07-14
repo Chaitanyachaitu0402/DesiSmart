@@ -5,6 +5,7 @@ import Facebook from '../../assets/icons/social_icons/Facebook.png';
 import Instagram from '../../assets/icons/social_icons/Instagram.png';
 import Twitter from '../../assets/icons/social_icons/Twitter.png';
 import { LocationOn, Mail, Phone } from "@mui/icons-material";
+import footer_logo from '../../assets/Logos/footer-logo.png'
 
 // This Class for Sub_Component_Link
 class Link {
@@ -27,7 +28,7 @@ const Footer = () => {
                     {/* About Grocery */}
                     <div className='col sm:col-span-2  lg:col-span-2 xl:space-y-6 space-y-4'>
                         {/* Brand_Logo */}
-                        <img className='sm:max-h-24 max-h-11 my-auto cursor-pointer' src={logo_black} alt="grocery" />
+                        <img className='sm:max-h-24 max-h-11 my-auto cursor-pointer' src={footer_logo} alt="grocery" />
 
                         {/* Description */}
                         <p className='sm:text-sm w-11/12 sm:w-10/12 text-xs tracking-wide'>

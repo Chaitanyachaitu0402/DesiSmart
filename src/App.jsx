@@ -25,6 +25,7 @@ import FAQ from './Components/FAQ/FAQ';
 import Forgotpassword from './Components/Forgot Password/Forgotpassword';
 import Createpassword from './Components/CreatePassword/CreatePassword';
 import EachCategoryProduct from './Components/EachCategoryProduct/EachCategoryProduct';
+import Paymentform from './Components/Paymentform';
 
 const AppWrapper = () => {
   const [loading, setLoading] = useState(false);
@@ -55,7 +56,7 @@ const AppWrapper = () => {
           <Route path="/forgotpassword" element={<Forgotpassword />} />
           <Route path="/createpassword" element={<Createpassword />} />
           <Route path="/login" element={<Login />} />
-
+          <Route path="/Paymentform" element={<Paymentform />} />
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/cart" element={<Cart />} />

@@ -95,14 +95,14 @@ const GiftCardsPage = () => {
                                     Gift Cards
                                 </Link>
                             </li>
-                            <li className="mb-2">
+                            {/* <li className="mb-2">
                                 <Link
                                     to="/savedcards"
                                     className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/payment/saved-cards') ? 'text-blue-600 font-bold' : ''}`}
                                 >
                                     Saved Cards
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </li>
                     <li>

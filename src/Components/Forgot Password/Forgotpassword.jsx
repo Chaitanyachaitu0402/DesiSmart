@@ -22,7 +22,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/user/check-email",
+        "https://desismart.co.uk/web/user/check-email",
         {
           email: data.email,
         }

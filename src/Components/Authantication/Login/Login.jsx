@@ -26,7 +26,7 @@ const Login = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch('http://localhost:3000/user/login-user', {
+            const response = await fetch('https://desismart.co.uk/web/user/login-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const Login = () => {
     const getLoginUserData=async (accessToken)=>{
         try {
             console.log("========> ",accessToken)
-            const response = await fetch('http://localhost:3000/user/get-logged-in-user-details', {
+            const response = await fetch('https://desismart.co.uk/web/user/get-logged-in-user-details', {
                 method: 'GET',
                 headers: {Authorization:`Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
@@ -70,6 +70,8 @@ const Login = () => {
                 localStorage.setItem('userName',JSON.stringify( result.data.user_name));
                 localStorage.setItem('user_id',JSON.stringify( result.data.user_id));
                 localStorage.setItem('Address',JSON.stringify( result.data.Address));
+                localStorage.setItem('Pincode',JSON.stringify( result.data.Pincode));
+                localStorage.setItem('email',JSON.stringify( result.data.email));
                 localStorage.setItem('grocery_userLoggedIn', true);
                 // setIsUserLoggedIn(true);
                 navigate(from);
@@ -225,7 +227,7 @@ const SignUpForm = ({ handleSubmit, handleSocialLogin, setSignUpError, navigate 
     // const [isUserLoggedIn, setIsUserLoggedIn] = userLoggedInState;
     const onSubmit = async (data) => {
         try {
-            const response = await fetch('http://localhost:3000/user/create-user', {
+            const response = await fetch('https://desismart.co.uk/web/user/create-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -365,6 +367,23 @@ const SignUpForm = ({ handleSubmit, handleSocialLogin, setSignUpError, navigate 
                     size='small'
                     error={errors.Address ? true : false}
                     helperText={errors.Address ? errors.Address.message : ''}
+                    fullWidth
+                    variant='outlined'
+                    className='input'
+                />
+            </div>
+            <div className="input-field">
+                <i className="fas fa-location-dot"></i>
+                <input
+                    type="text"
+                    {...register('Pincode', {
+                        required: 'Pincode is required',
+                        
+                    })}
+                    placeholder="Pincode"
+                    size='small'
+                    error={errors.Pincode ? true : false}
+                    helperText={errors.Pincode ? errors.Pincode.message : ''}
                     fullWidth
                     variant='outlined'
                     className='input'

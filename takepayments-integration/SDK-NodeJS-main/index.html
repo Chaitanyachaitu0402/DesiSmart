@@ -1,0 +1,261 @@
+<html>
+<head>
+ <!-- Load the jQuery library -->
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+ <!-- Load the jQuery Validator plugin -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+
+<!-- Load the Hosted Payment Field library -->
+ <script src="https://gw1.tponlinepayments.com/hosted"></script>
+
+ <!-- General styles -->
+ <style>
+ body {
+font-size: 14px;
+ }
+
+ .form-group {
+ margin: 4px 0 15px 0;
+ }
+
+.form-group LABEL {
+ display: inline-block;
+ max-width: 100%;
+ margin-bottom: 5px;
+ font-weight: bold;
+ }
+
+ .form-control {
+ display: block;
+ box-sizing: border-box;
+ height: 34px;
+ width: 400px;
+ padding: 6px 12px;
+ font-size: 14px;
+ color: #555;
+ background-color: #fff;
+background-image: none;
+ border: 1px solid #ccc;
+ border-radius: 4px;
+ -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+ -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+ -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+ transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+ }
+
+ .form-control.hf-focus {
+ border-color: #66afe9;
+ outline: 0;
+ -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+ box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+ }
+
+ .has-error .form-control.hf-focus {
+ border-color: #843534;
+ -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483;
+ box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483;
+ }
+ </style>
+
+ <!-- Hosted Field internal styles -->
+ <style class="hostedfield">
+ /* Grey out when disabled */
+ .hostedfield:disabled {
+cursor: not-allowed;
+ background-color: #eee;
+ opacity: 1;
+ }
+
+ /* Change border and text to green when valid */
+.form-control:valid,
+ .hostedfield:valid {
+ border-color: #28a745 !important;
+ color: #28a745 !important;
+ }
+
+ /* Change border and text to red when invalid */
+ .form-control:invalid,
+ .hostedfield:invalid {
+ border-color: #a94442 !important;
+ color: #a94442 !important;
+ }
+
+ /* Change text to light grey when readonly */
+ .form-control:readonly,
+ .hostedfield:readonly {
+ color: lightgrey !important;
+ }
+
+ /* Emulate webkit auto fill style */
+.form-control.hf-autofill,
+ .hostedfield.hf-autofill {
+ background-color: rgb(250, 255, 189) !important;
+ background-image: none !important;
+ color: rgb(0, 0, 0) !important;
+ }
+
+ /* Add light blue placeholder */
+ .form-control::placeholder,
+ .hostedfield::placeholder {
+ color: lightblue;
+ }
+
+ /* Show hovering over the control */
+ .form-control:hover,
+.hostedfield:hover {
+ font-style: italic;
+}
+
+ /* Style by id (hosted field will have '
+-hostedfield' appended to the id) */
+ #form-card-number, #form-card-number-hostedfield {
+ color: darkcyan;
+ }
+
+ </style>
+ <!-- Hosted Field card-number internal styles -->
+ <style class="card-number">
+
+ .hostedfield::placeholder {
+ color: orange;
+ }
+
+ </style>
+ </head>
+
+ <body>
+<!-- tokenise payment data and send directly to the Gateway -->
+<form id="form" method="POST" novalidate="novalidate" lang="en"
+ action="https://gw1.tponlinepayments.com/hosted/"
+ data-hostedform-tokenize='{"#form-customer-name": "customerName"}'>
+ <input type="hidden" name="merchantID" value="268397">
+ <input type="hidden" name="action" value="SALE">
+ <input type="hidden" name="type" value="1">
+ <input type="hidden" name="countryCode" value="827">
+ <input type="hidden" name="currencyCode" value="827">
+<input type="hidden" name="amount" value="1001">
+ <input type="hidden" name="orderRef" value="Test purchase">
+ <input type="hidden" name="transactionUnique" value="55f025addd3c2">
+ <input type="hidden" name="redirectURL" value="https://www.merchant.com/payment/">
+ <input type="hidden" name="signature" value="419plU92BEY02g9D97X4">
+ <input type="hidden" name="paymentToken" value=
+"">
+
+ <div class="form-group">
+ <label for="form-customer-name">Name on card:</label>
+ <input id="form-customer-name" type="text" name="paymentToken[customerName]" autocomplete="cc-
+name" class="form-control form-control-native hostedfield-tokenise" placeholder="Firstname Surname" required>
+ </div>
+
+ <div class="form-group">
+ <label for="form-card-number">Card Number:</label>
+<input id="form-card-number" type="hostedfield:cardNumber" name="card-number" autocomplete="cc-
+number" class="form-control form-control-
+hosted" style="background: #f2f8fb;" placeholder="**** **** **** ****" required>
+ </div>
+
+ <div class="form-group">
+ <label for="form-card-expiry-date">Card Expiry Date:</label>
+<input id="form-card-expiry-date" type="hostedfield:cardExpiryDate" name="card-expiry-
+date" autocomplete="cc-exp" class="form-control form-control-hosted" required>
+ </div>
+
+ <div class="form-group">
+ <label for="form-card-start-date">Card Issue Date:</label>
+ <input id="form-card-start-date" type="hostedfield:cardStartDate" name="card-start-
+date" autocomplete="cc-iss" class="form-control form-control-hosted" data-hostedfield='{"dropdown":true}' data-
+hostedfield-format="N - m | y" data-hostedfield-min-date=
+"
+-40" data-hostedfeld-max-date="0">
+ </div>
+
+<div class="form-group">
+    
+     <label for="form-card-cvv">CVV:</label>
+<input id="form-card-cvv" type="hostedfield:cardCVV" name="card-cvv" autocomplete="cc-csc" class="form-
+control form-control-hosted" required>
+ </div>
+
+ <button id="form-submit" type="submit">Pay <span>▷</span></button>
+ </form>
+
+ <script>
+// This example demonstrates both automatic and manual form setup
+ var automatic_setup = true;
+
+ $(document).ready(function () {
+
+ var $form = $('#form');
+
+ // Listen for events on the form to see those sent from the Hosted Payment Fields
+ // (For demonstration purposes only)
+ $form.on(events);
+
+ if (automatic_setup) {
+ var opts = {
+ autoSetup: true,
+ autoSubmit: true,
+ fields: {
+ any: {
+ nativeEvents: true,
+ },
+ cardNumber: {
+ selector: $('#form-card-number'),
+ style: 'text-decoration: green wavy underline;',
+ stylesheet: $('style.hostedfields, style.card-number')
+ }
+ }
+ };
+
+ try {
+ $form.hostedForm(opts);
+ } catch(e) {
+ showError('Failed to create hosted form: ' + e);
+ throw e; // Can't continue with this script
+ }
+
+ $form.on({
+ 'hostedform:presubmit': function (event) {
+ console.log('Form submitting');
+ return $form.valid();
+ },
+
+ 'hostedform:valid': function (event) {
+ console.log('Form valid');
+ return true;
+ },
+
+ 'hostedform:invalid': function (event, details) {
+ console.log('Form invalid');
+ showFieldErrors(details.invalid);
+ return true;
+ },
+
+ 'hostedform:error': function (event, details) {
+ showError(details.message);
+ return true;
+ }
+ });
+
+ $form.validate();
+ } else {
+ try {
+ $('#form-card-number').hostedField({
+ nativeEvents: true,
+ style: 'text-decoration: green wavy underline;',
+ stylesheet: $('style.hostedfields, style.card-number')
+ });
+
+ $('.form-control-hosted:input', $form).hostedField({nativeEvents: true});
+ } catch(e) {
+ showError('Failed to create hosted form: ' + e);
+ throw e; // Can't continue with this script
+ }
+ }
+ });
+
+ </script>
+ </body>
+ </html>

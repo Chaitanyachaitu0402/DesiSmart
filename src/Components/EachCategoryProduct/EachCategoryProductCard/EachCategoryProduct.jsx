@@ -5,7 +5,7 @@ import SuccessAlert from '../../SuccessAlert/SuccessAlert'; // Import SuccessAle
 
 
 const ProductCard = ({ product, onAddToCart }) => {
-    const { Name, SalePrice, Supplier } = product;
+    const { Name, SalePrice,product_image, Supplier } = product;
     const [openAlert, setOpenAlert] = useState(false);
 
     // State for product quantity
@@ -33,6 +33,12 @@ const ProductCard = ({ product, onAddToCart }) => {
                 <Card sx={{ maxWidth: 295, mx: 'auto', boxShadow: '0 9px 5px -0px rgb(0 0 0 / 0.4)' }} >
                     <div className='p-1.5'>
                         <CardContent className='md:space-y-2 space-y-1.5 '>
+                        <div className="flex justify-center">
+                            <img
+                                src={"https://desismart.co.uk/storege/userdp/" + product_image}              
+                                
+                            />
+                            </div>
                             {/* Product name */}
                             <h3 className='md:text-xl lg:text-xl text-xl text-gray-700 font-semibold text-center capitalize'>
                                 {Name}
@@ -40,15 +46,15 @@ const ProductCard = ({ product, onAddToCart }) => {
                             {/* Product details */}
                             <div className='flex justify-center space-x-5'>
                                 <span className='block text-sm md:text-xs lg:text-lg font-bold'>
-                                    £ {SalePrice} GBP
+                                    £ {SalePrice} 
                                 </span>
                             </div>
                             {/* Supplier details */}
-                            <div className='flex justify-center'>
+                            {/* <div className='flex justify-center'>
                                 <span className='text-sm md:text-xs lg:text-sm text-black font-medium'>
                                     <span className='font-bold text-black underline'>Supplier:</span> {Supplier?.Name || 'Unknown'}
                                 </span>
-                            </div>
+                            </div> */}
                             {/* Quantity selector */}
                             <div className='flex justify-center items-center space-x-2'>
                                 <IconButton onClick={() => handleQuantityChange(-1)} size='small'>

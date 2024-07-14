@@ -36,7 +36,7 @@ const Cart = () => {
     const fetchCartItems = async (user_id) => {
         try {
             // Fetch cart items from backend based on user_id
-            const response = await axios.get(`http://localhost:3000/cart/get-user-by-id/${user_id}`);
+            const response = await axios.get(`https://desismart.co.uk/cart/get-user-by-id/${user_id}`);
             setCartItems(response.data.cartItems); // Update cart items based on backend response
         } catch (error) {
             console.error("Error fetching cart items:", error);

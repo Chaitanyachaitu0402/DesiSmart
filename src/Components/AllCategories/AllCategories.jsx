@@ -16,27 +16,28 @@ const Categories = () => {
   window.scroll({ top: 0 });
 
   // Credentials
-  const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
-  const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
-  const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
+  // const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
+  // const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
+  // const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
 
   // Fetch Categories from Eposnow API
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        const accessToken = localStorage.getItem('accessToken')
         const response = await axios.get(
-          "http://localhost:8080/https://api.eposnowhq.com/api/v4/Category",
+          "https://desismart.co.uk/web/categories/get-all-categories",
           {
             headers: {
-              Authorization: `Basic ${authToken}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
-              "epos-api-key": eposKey,
-              "epos-api-secret": eposSecret,
+              // "epos-api-key": eposKey,
+              // "epos-api-secret": eposSecret,
             },
           }
         );
         console.log(response.data);
-        const categories = response.data;
+        const categories = response.data.data;
         setCategories(categories);
         setpopularCategories(popularcategories);
         setIsLoading(false);

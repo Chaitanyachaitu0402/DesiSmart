@@ -16,21 +16,22 @@ const Products = () => {
     const { cartItemsState } = useContext(groceryContext); // Use groceryContext
     const [cartItems, setCartItems] = cartItemsState;
 
-    const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
-    const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
-    const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
+    // const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
+    // const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
+    // const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
 
     // Fetch Category details from Eposnow API based on categoryId
     const fetchCategoryDetails = async () => {
         try {
+            const accessToken = localStorage.getItem('accessToken')
             const response = await axios.get(
-                `http://localhost:8080/https://api.eposnowhq.com/api/v4/Category/${categoryId}`,
+                `https://desismart.co.uk/web/categories/get-all-categories/${categoryId}`,
                 {
                     headers: {
-                        Authorization: `Basic ${authToken}`,
+                        Authorization: `Bearer ${accessToken}`,
                         "Content-Type": "application/json",
-                        "epos-api-key": eposKey,
-                        "epos-api-secret": eposSecret,
+                        // "epos-api-key": eposKey,
+                        // "epos-api-secret": eposSecret,
                     },
                 }
             );
@@ -45,18 +46,19 @@ const Products = () => {
         setIsLoading(true); // Set loading state
 
         try {
+            const accessToken = localStorage.getItem('accessToken')
             const response = await axios.get(
-                `http://localhost:8080/https://api.eposnowhq.com/api/v4/Product`,
+                `https://desismart.co.uk/web/product/get-all-product`,
                 {
                     headers: {
-                        Authorization: `Basic ${authToken}`,
+                        Authorization: `Bearer ${accessToken}`,
                         "Content-Type": "application/json",
-                        "epos-api-key": eposKey,
-                        "epos-api-secret": eposSecret,
+                        // "epos-api-key": eposKey,
+                        // "epos-api-secret": eposSecret,
                     },
                 }
             );
-            const allProducts = response.data;
+            const allProducts = response.data.data;
             setProducts(allProducts);
             // Filter products based on categoryId
             const filtered = allProducts.filter(product => product.CategoryId.toString() === categoryId);

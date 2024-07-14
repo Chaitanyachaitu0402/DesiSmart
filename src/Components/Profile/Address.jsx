@@ -23,7 +23,7 @@ const OrdersPage = () => {
                 }
 
                 const response = await axios.post(
-                    'http://localhost:3000/order/get-order-by-user-id',
+                    'https://desismart.co.uk/order/get-order-by-user-id',
                     { user_id },
                     {
                         headers: {
@@ -104,14 +104,14 @@ const OrdersPage = () => {
                                     Gift Cards
                                 </Link>
                             </li>
-                            <li className="mb-2">
+                            {/* <li className="mb-2">
                                 <Link
                                     to="/savedcards"
                                     className={`text-white font-normal hover:text-black transition-all ${isActive('/profile/payment/saved-cards') ? 'text-blue-600 font-bold' : ''}`}
                                 >
                                     Saved Cards
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </li>
                     <li>

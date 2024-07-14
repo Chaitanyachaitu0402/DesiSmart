@@ -14,9 +14,9 @@ const EnjoyOurFreshGroceryItems = () => {
     const isExtraSmallScreen = useMediaQuery('(max-width: 640px)');
 
     // Eposnow API keys and authentication
-    const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
-    const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
-    const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
+    // const eposKey = "4IUQP4AY3GCQHEKN8TFUECT5AE16FK91";
+    // const eposSecret = "HWQWEWZSXXBO6GHAN2HSPELYCUSZJBSZ";
+    // const authToken = "NElVUVA0QVkzR0NRSEVLTjhURlVFQ1Q1QUUxNkZLOTE6SFdRV0VXWlNYWEJPNkdIQU4ySFNQRUxZQ1VTWkpCU1o=";
 
     const categoryIds = {
         Biscuits: 1, // Replace with actual category ID
@@ -29,21 +29,23 @@ const EnjoyOurFreshGroceryItems = () => {
         const fetchProducts = async () => {
             setIsLoading(true);
             try {
+                const accessToken = localStorage.getItem('accessToken');
+                console.log("=========>",accessToken);
                 const categoryName = Object.keys(categoryIds)[selectedCategory];
                 const categoryId = categoryIds[categoryName];
 
                 const response = await axios.get(
-                    `http://localhost:8080/https://api.eposnowhq.com/api/v4/Product?CategoryId=${categoryId}`,
+                    `https://desismart.co.uk/web/product/get-all-product`,
                     {
                         headers: {
-                            Authorization: `Basic ${authToken}`,
+                            Authorization: `Bearer ${accessToken}`,
                             "Content-Type": "application/json",
-                            "epos-api-key": eposKey,
-                            "epos-api-secret": eposSecret,
+                            // "epos-api-key": eposKey,
+                            // "epos-api-secret": eposSecret,
                         },
                     }
                 );
-                setItems(response.data.slice(0, 3));
+                setItems(response.data.data.slice(0, 3));
                 setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching products:", error);
@@ -98,9 +100,9 @@ const ItemsToggler = ({ alignment, setAlignment }) => {
     const isLargeScreen = useMediaQuery('(min-width: 1024px)');
 
     const categories = [
-        { id: 0, name: 'Biscuits' },
-        { id: 1, name: 'Breakfast' },
-        { id: 2, name: 'DryFruits and Nuts' },
+        // { id: 0, name: 'Biscuits' },
+        // { id: 1, name: 'Breakfast' },
+        // { id: 2, name: 'DryFruits and Nuts' },
     ];
 
     return (
